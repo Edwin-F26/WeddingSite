@@ -1,0 +1,141 @@
+# Renal & Diabetic Nutrition Dashboard
+
+Standard calorie trackers optimize for weight loss. People on dialysis or living
+with advanced chronic kidney disease need something else entirely: a running
+count of **phosphorus, potassium, and sodium**, and — when diabetes is in the
+picture too — **carbohydrate and glycemic load**. Those numbers are buried or
+missing in mainstream apps.
+
+This is a single-page React app that logs meals against USDA FoodData Central
+and shows, at a glance, how close the day is to each of those limits.
+
+## What it does
+
+- **Read the day in one number.** A daily balance score (0–100) sits in the
+  hero: full marks while every metric is comfortably inside its limit, falling
+  as metrics pass 90% and bottoming out when several are badly over.
+- **Search real food data.** Queries the USDA FoodData Central API across the
+  Foundation, SR Legacy, FNDDS survey, and branded datasets.
+- **Log realistic portions.** Expanding a result pulls that food's household
+  measures ("1 medium", "1 cup, sliced"), and shows a live nutrient preview
+  before anything is committed to the log.
+- **Track kidney and blood-sugar metrics side by side.** Net carbs, estimated
+  glycemic load, sodium, potassium, phosphorus, protein, fluid, and energy each
+  get a gauge with caution (70%), warning (90%), and over-limit states.
+- **Explain the numbers.** Selecting any metric lists the foods contributing
+  most to it, so "potassium is at 154%" turns into "the potato and the orange
+  juice did that."
+- **Warn before the limit, not after.** The warnings panel ranks whatever is
+  closest to its limit and pairs it with practical guidance.
+- **Start from a clinical profile.** Presets for CKD stage 3–4, hemodialysis,
+  peritoneal dialysis, and type 2 diabetes; every individual limit is editable.
+- **Show the week.** A seven-day trend chart, viewable as daily totals or split
+  by meal, with the limit drawn as a reference line, plus a logging streak to
+  reward coming back.
+
+Everything persists to `localStorage`, so the log survives a refresh.
+
+Totals count up rather than jumping, gauges and panels animate in, and logging a
+food raises a confirmation toast. All of it collapses to instant under
+`prefers-reduced-motion: reduce`.
+
+## Getting started
+
+```bash
+npm install
+npm run dev
+```
+
+### API key
+
+The app falls back to the shared `DEMO_KEY`, which is capped at roughly 30
+requests per hour per IP address — fine for a first look, frustrating for real
+use. Get a free key at <https://fdc.nal.usda.gov/api-key-signup> and add it:
+
+```bash
+cp .env.example .env.local
+```
+
+Then edit `.env.local`:
+
+```
+VITE_FDC_API_KEY=your_key_here
+```
+
+If the API is unreachable, rate-limited, or rejecting the key, search falls back
+to a small built-in pantry of about 40 common foods so the dashboard stays
+usable. A banner explains when that happens.
+
+No key and no network? Use **Load a sample day** to populate a realistic day
+that deliberately runs over the potassium and phosphorus limits.
+
+### Other commands
+
+```bash
+npm run build     # production build
+npm run preview   # serve the production build
+npm run lint      # eslint
+```
+
+## How it is put together
+
+```
+src/
+  components/     UI: search, portion picker, meal log, gauges, alerts, charts
+  data/           Nutrient definitions, target presets, GI table, offline foods
+  hooks/          useDebouncedValue
+  lib/            fdc.js (API client), nutrition.js (math), format.js
+  pages/          Dashboard composition
+  state/          useReducer store, context, localStorage persistence
+```
+
+**State management.** A single `useReducer` in `NutritionProvider` owns the log
+(keyed by date), the active preset, and the limits. Totals, per-meal breakdowns,
+gauge status, warnings, and the weekly series are all derived with `useMemo`
+rather than stored, so there is one source of truth and no chance of the
+displayed totals drifting from the entries.
+
+**The API layer.** FoodData Central identifies nutrients three different ways
+depending on the dataset and endpoint, so `lib/fdc.js` normalizes everything into
+one per-100 g record. Two quirks worth knowing:
+
+- Search hits come back with an *empty* `foodMeasures` array. Household portions
+  only exist on the `/food/{fdcId}` detail endpoint, so the app fetches (and
+  caches) detail lazily when a result is expanded.
+- Energy can appear twice in one record (Atwater specific and general). Only the
+  first value is kept, or calories would double.
+
+## Notes on the numbers
+
+**Glycemic load is an estimate.** FoodData Central publishes no glycemic index,
+so `data/glycemicIndex.js` matches the food description against a keyword table
+of published average GI values and weights it by net carbohydrate. Matching runs
+on word tokens rather than substrings, because USDA descriptions are
+comma-inverted — "brown rice" has to match "Rice, brown, long-grain, cooked",
+while "pea" must not match "Peanut butter". Unmatched foods default to a
+mid-range GI of 50.
+
+**Fluid is approximated** from the water content of logged foods and drinks,
+treating 1 g of water as 1 mL.
+
+**Additive phosphorus is invisible here.** Food databases report total
+phosphorus, but the phosphate additives in processed food are absorbed far more
+completely than phosphorus bound in whole foods. A processed item's real burden
+is higher than its number suggests.
+
+## Disclaimer
+
+An educational project. The preset limits are population-level ranges from
+published KDOQI and ADA guidance, not a prescription. Nothing here substitutes
+for advice from a nephrologist, endocrinologist, or renal dietitian.
+
+## Roadmap
+
+This is the first of three planned pieces:
+
+1. **Nutrition dashboard** — this app.
+2. **Insulin & dialysis scheduling tracker** — weekly routine visualization with
+   browser-local reminders.
+3. **Predictive blood glucose visualizer** — React frontend against a Python
+   scikit-learn backend forecasting glucose trajectory from current reading,
+   carbohydrate intake, and insulin dosed.
