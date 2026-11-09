@@ -2,6 +2,8 @@ import { useLayoutEffect, useRef } from 'react';
 import { gsap, MOTION_OK, REDUCED } from '../lib/gsap';
 import useReveal from '../hooks/useReveal';
 import HeartEnvelope from './HeartEnvelope';
+import RsvpForm from './RsvpForm';
+import { supabaseConfigured } from '../lib/supabase';
 import { rsvp } from '../data/wedding';
 
 export default function Rsvp() {
@@ -63,32 +65,52 @@ export default function Rsvp() {
     return () => ctx.revert();
   }, [ref]);
 
+  // With Supabase configured the form lives on the page; otherwise the
+  // envelope and button fall back to the external RSVP link.
+  const envelope = (
+    <HeartEnvelope ref={envRef} flapRef={flapRef} cardRef={cardRef} tone="sage">
+      <span className="env__script">Kindly Respond</span>
+      <span className="env__small">
+        by {rsvp.deadline},
+        <br />
+        {supabaseConfigured ? 'using the form below' : <u>using the RSVP here</u>}
+      </span>
+    </HeartEnvelope>
+  );
+
   return (
     <section id="rsvp" ref={ref} className="section section--rsvp">
-      <a
-        className="rsvp__link"
-        href={rsvp.url}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={`RSVP by ${rsvp.deadline}`}
-        data-reveal
-      >
-        <HeartEnvelope ref={envRef} flapRef={flapRef} cardRef={cardRef} tone="sage">
-          <span className="env__script">Kindly Respond</span>
-          <span className="env__small">
-            by {rsvp.deadline},
-            <br />
-            using the <u>RSVP here</u>
-          </span>
-        </HeartEnvelope>
-      </a>
+      {supabaseConfigured ? (
+        <div className="rsvp__link" data-reveal>
+          {envelope}
+        </div>
+      ) : (
+        <a
+          className="rsvp__link"
+          href={rsvp.url}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`RSVP by ${rsvp.deadline}`}
+          data-reveal
+        >
+          {envelope}
+        </a>
+      )}
+
       <p className="rsvp__note" data-reveal>
         We would love to know if you can join us. Please respond by{' '}
         <strong>{rsvp.deadline}</strong>.
       </p>
-      <a className="btn btn--wine" href={rsvp.url} target="_blank" rel="noreferrer" data-reveal>
-        RSVP
-      </a>
+
+      {supabaseConfigured ? (
+        <div data-reveal className="rsvp__form-wrap">
+          <RsvpForm />
+        </div>
+      ) : (
+        <a className="btn btn--wine" href={rsvp.url} target="_blank" rel="noreferrer" data-reveal>
+          RSVP
+        </a>
+      )}
     </section>
   );
 }

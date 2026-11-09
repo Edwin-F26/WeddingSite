@@ -19,6 +19,28 @@ npm run preview   # serve the production build
 npm run lint      # eslint
 ```
 
+## RSVPs (Supabase)
+
+RSVPs are stored in a Supabase table. Without the env vars below the site
+falls back to the external link in `src/data/wedding.js`.
+
+1. In the Supabase dashboard, open **SQL Editor** and run `supabase/schema.sql`.
+   It creates `public.rsvps` with Row Level Security so the browser key can
+   only insert rows.
+2. Create `.env.local` (gitignored) with the project URL and the
+   **publishable** key from **Settings → API Keys**:
+
+   ```
+   VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+   VITE_SUPABASE_ANON_KEY=sb_publishable_...
+   ```
+
+   Never put the `sb_secret_` key in this project; everything here ships to
+   the browser.
+3. Restart `npm run dev`. Responses appear in **Table Editor → rsvps**.
+
+When deploying, add the same two variables in the host's environment settings.
+
 ## Editing the content
 
 Everything guests read lives in one file: `src/data/wedding.js`.
