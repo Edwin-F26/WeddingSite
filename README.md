@@ -1,10 +1,11 @@
 # Edwin & Maria — Wedding Website
 
-A single-page wedding invitation for Edwin & Maria (September 30, 2027 · Miami). Built with React, Vite, GSAP, and Supabase for RSVPs.
+Single-page wedding invitation for Edwin & Maria  
+**September 30, 2027 · Miami, Florida**
 
-Guests open wine curtains into a dark invitation card, then scroll through venue, schedule, dress code, and RSVP.
+Built with React, Vite, GSAP, and Supabase.
 
-## Getting started
+## Quick start
 
 ```bash
 npm install
@@ -12,64 +13,53 @@ npm run dev
 ```
 
 ```bash
-npm run build     # production build → dist/
-npm run preview   # serve the production build
+npm run build
+npm run preview
 npm run lint
 ```
 
-## RSVPs (Supabase)
+## RSVP setup (Supabase)
 
-Without the env vars below, the form falls back to the external link in `src/data/wedding.js`.
+1. Run `supabase/schema.sql` in the Supabase SQL Editor.
+2. Add a `.env.local` file:
 
-1. In Supabase, open **SQL Editor** and run `supabase/schema.sql`.
-2. Create `.env.local` (gitignored) with your project URL and **anon / publishable** key from **Project Settings → API**:
+```bash
+VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+VITE_SUPABASE_ANON_KEY=<anon-or-publishable-key>
+```
 
-   ```bash
-   VITE_SUPABASE_URL=https://<project-ref>.supabase.co
-   VITE_SUPABASE_ANON_KEY=<anon-key>
-   ```
+Use the **anon / publishable** key only. Never put the service-role key in this repo.
 
-   Never put the service-role / secret key in this project — the browser can see it.
-3. Restart `npm run dev`. Responses show up under **Table Editor → rsvps**.
+3. Restart the dev server. RSVPs appear in **Table Editor → rsvps**.
 
-When deploying, set the same two variables in your host’s environment.
+If those env vars are missing, the form falls back to the link in `src/data/wedding.js`.
 
-## Editing content
+## Content edits
 
-All guest-facing copy lives in `src/data/wedding.js`:
+All guest-facing copy is in `src/data/wedding.js`:
 
-| Key | Controls |
+| Key | What it controls |
 | --- | --- |
-| `couple` | Names on the card and footer |
-| `event` | Date (ISO drives the countdown), stamps, city |
+| `couple` | Names |
+| `event` | Date, stamps, city |
 | `scripture` | Verse on the invitation |
-| `venue` | Name, address, description, website, map link |
-| `schedule` | Day-of stops: time, title, icon |
-| `dressCode` | Formal attire guidance + palette swatches |
-| `rsvp` | Deadline text and fallback RSVP URL |
+| `venue` | Loveland Venue details + map/website links |
+| `schedule` | Day-of timeline |
+| `dressCode` | Formal attire + palette |
+| `rsvp` | Deadline + fallback URL |
 
 ## Brand
 
-- **Palette:** cream `#F8EFE7`, blush `#ECACB1`, wine `#471225`, cocoa `#250F0D`, sage `#A8B17E`, olive `#445427`, forest `#161D0A`, black — as CSS variables in `src/index.css`
-- **Logos:** `public/images/` (`logo-monogram.png`, `logo-wordmark.png`, `logo-wordmark-light.png`)
-- **Type:** Cormorant Garamond + Jost (Google Fonts), Aston Script locally from `aston_script/`
+- Palette: cream, blush, wine, cocoa, sage, olive, forest, black (`src/index.css`)
+- Logos: `public/images/`
+- Fonts: Cormorant Garamond, Jost, local Aston Script
 
-## Structure
+## Project layout
 
 ```text
 src/
-  components/
-    Intro.jsx         Curtain landing
-    Invitation.jsx    Invitation card + countdown
-    Location.jsx      Venue details
-    Schedule.jsx      Ribbon program timeline
-    DressCode.jsx     Formal attire + swatches
-    Rsvp.jsx          Lace heart + RSVP form
-    Nav.jsx / Footer.jsx
-    Ornaments.jsx     SVG flourishes and icons
-  data/wedding.js     Site copy
-  lib/supabase.js     Supabase client
-  lib/gsap.js         GSAP + ScrollTrigger
+  components/   Intro, Invitation, Location, Schedule, DressCode, Rsvp, Nav, Footer
+  data/         wedding.js (site copy)
+  lib/          supabase.js, gsap.js
+supabase/       schema.sql
 ```
-
-Motion respects `prefers-reduced-motion: reduce`.
