@@ -111,10 +111,14 @@ export function Rings({ className = '', width = 220 }) {
         <circle cx="132" cy="78" r="36" opacity="0.45" />
         <path d="M57 50 A43 43 0 0 1 84 35" opacity="0.7" />
         <path d="M136 35 A43 43 0 0 1 163 50" opacity="0.7" />
-        {/* Solitaire diamond on the right band */}
-        <path d="M132 18 l-7 8 h14z" />
-        <path d="M125 26 l7 10 7 -10" />
-        <path d="M128 26 h8" opacity="0.7" />
+      </g>
+      {/* Engagement diamond on the right band */}
+      <g {...stroke} strokeWidth="1.6">
+        <path d="M132 14 L122 28 H142 Z" />
+        <path d="M122 28 L132 42 L142 28" />
+        <path d="M126 28 H138" opacity="0.75" />
+        <path d="M132 14 V28" opacity="0.55" />
+        <path d="M127 21 L132 28 L137 21" opacity="0.55" />
       </g>
     </svg>
   );
