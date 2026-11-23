@@ -914,17 +914,79 @@
 /* ---- dress code ---------------------------------------------------------- */
 
 .dress__copy {
-  max-width: 52ch;
+  width: min(900px, 100%);
   display: grid;
-  gap: 0.9rem;
+  gap: 1.5rem;
   font-size: 1.05rem;
   line-height: 1.7;
   color: var(--text-soft);
 }
 
-.dress__copy strong {
+.dress__intro {
+  margin: 0;
+  text-align: center;
+}
+
+.dress__intro span {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-family: var(--sans);
+  font-size: 0.7rem;
   font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
   color: var(--wine);
+}
+
+.dress__guides {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.dress__guide {
+  padding: clamp(1.25rem, 3vw, 1.8rem);
+  text-align: left;
+  border: 1px solid rgba(71, 18, 37, 0.14);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.dress__guide h3 {
+  margin: 0 0 0.85rem;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--wine);
+}
+
+.dress__guide ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dress__guide li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.dress__guide li + li {
+  margin-top: 0.45rem;
+}
+
+.dress__guide li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--olive);
+}
+
+.dress__note {
+  max-width: 58ch;
+  margin: 0 auto;
+  text-align: center;
+  font-style: italic;
 }
 
 .swatches {
@@ -1800,11 +1862,25 @@
 }
 
 .dress__copy {
-  max-width: 56ch;
+  max-width: none;
 }
 
-.dress__copy strong {
+.dress__intro span,
+.dress__guide h3 {
   color: var(--blush);
+}
+
+.dress__guide {
+  border-color: rgba(236, 172, 177, 0.2);
+  background: rgba(9, 7, 6, 0.28);
+}
+
+.dress__guide li::before {
+  color: var(--sage);
+}
+
+.dress__note {
+  color: var(--blush-soft);
 }
 
 .swatch__dot {
@@ -2315,6 +2391,10 @@
 
   .location__actions .btn {
     flex: 1 1 150px;
+  }
+
+  .dress__guides {
+    grid-template-columns: 1fr;
   }
 
   .rsvp__heart-stage {

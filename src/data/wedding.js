@@ -46,14 +46,18 @@ export const schedule = [
 ];
 
 export const dressCode = {
-  intro:
-    'We encourage rich, romantic colors and elegant, formal looks that bring our palette to life!',
-  gentlemen:
-    'A classic black suit is always a great choice, but we encourage you to embrace the wedding color palette with your formal attire as well.',
-  ladies:
-    'Please refrain from wearing white or ivory, as these colors are reserved for the bride.',
-  outro:
-    'If you\u2019re unsure about what to wear or whether a color is appropriate, please feel free to reach out to the bride or groom\u2014we\u2019re happy to help!',
+  intro: 'Think: one step above cocktail.',
+  women: [
+    'Floor-length gown or elegant midi/maxi dress',
+    'Sophisticated accessories',
+  ],
+  men: ['Dark suit', 'Dress shirt', 'Tie required'],
+  avoid: [
+    'Casual fabrics',
+    'Open-toe shoes',
+    'Loafers without socks (unless exceptionally stylish)',
+  ],
+  note: 'Please refrain from wearing white or ivory, as these colors are reserved for the bride.',
   // Suggested attire palette, taken from the brand color scheme.
   palette: [
     { name: 'Blush', hex: '#ECACB1' },

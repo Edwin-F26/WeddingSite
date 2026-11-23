@@ -31,14 +31,31 @@ export default function DressCode() {
         Dress Code
       </h2>
       <div className="dress__copy">
-        <p data-reveal>{dressCode.intro}</p>
-        <p data-reveal>
-          <strong>Gentlemen:</strong> {dressCode.gentlemen}
+        <p className="dress__intro" data-reveal>
+          <span>Formal Attire</span>
+          {dressCode.intro}
         </p>
-        <p data-reveal>
-          <strong>Ladies:</strong> {dressCode.ladies}
+
+        <div className="dress__guides">
+          {[
+            ['Women', dressCode.women],
+            ['Men', dressCode.men],
+            ['Avoid', dressCode.avoid],
+          ].map(([title, items]) => (
+            <article key={title} className="dress__guide" data-reveal>
+              <h3>{title}</h3>
+              <ul>
+                {items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+
+        <p className="dress__note" data-reveal>
+          {dressCode.note}
         </p>
-        <p data-reveal>{dressCode.outro}</p>
       </div>
 
       <ul ref={swatchesRef} className="swatches" aria-label="Suggested colour palette">
