@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Aston Script';
+  src: url('../aston_script/Aston Script.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   /* ---- brand palette (from colorscheme.png) ---- */
   --cream: #f8efe7;
@@ -14,29 +22,36 @@
   --blush-soft: #f6d3d6;
   --blush-deep: #d9949a;
   --sage-soft: #d7dcc0;
-  --wine-soft: rgba(71, 18, 37, 0.08);
-  --olive-soft: rgba(68, 84, 39, 0.1);
+  --wine-soft: rgba(236, 172, 177, 0.1);
+  --olive-soft: rgba(168, 177, 126, 0.12);
 
-  --text: var(--cocoa);
-  --text-soft: #6d4f55;
-  --heading: var(--wine);
-  --accent: var(--olive);
+  /* Midnight surfaces keep the supplied palette, only changing its balance. */
+  --night: #090706;
+  --night-raised: #100c0c;
+  --night-wine: #170910;
+  --night-forest: #0b1007;
+  --line-light: rgba(248, 239, 231, 0.16);
+
+  --text: var(--cream);
+  --text-soft: #c7b8b2;
+  --heading: var(--cream);
+  --accent: var(--sage);
 
   --serif: 'Cormorant Garamond', 'Cormorant', Garamond, 'Times New Roman', serif;
-  --script: 'Pinyon Script', 'Brush Script MT', cursive;
-  --sans: 'Jost', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --script: 'Aston Script', 'Pinyon Script', 'Brush Script MT', cursive;
+  --sans: 'Helvetica Neue', 'Helvetica Now', 'Jost', Helvetica, Arial, sans-serif;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --shadow-card:
-    0 1px 2px rgba(37, 15, 13, 0.06),
-    0 18px 40px -18px rgba(37, 15, 13, 0.25);
+    0 1px 0 rgba(248, 239, 231, 0.06),
+    0 30px 80px -35px rgba(0, 0, 0, 0.9);
   --shadow-float:
-    0 10px 30px -10px rgba(37, 15, 13, 0.35),
-    0 40px 80px -40px rgba(37, 15, 13, 0.35);
+    0 24px 70px -25px rgba(0, 0, 0, 0.9),
+    0 0 90px -45px rgba(71, 18, 37, 0.9);
 
   font: 17px/1.6 var(--serif);
   color: var(--text);
-  background: var(--cream);
+  background: var(--night);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -52,7 +67,7 @@
 html,
 body {
   margin: 0;
-  background: var(--cream);
+  background: var(--night);
 }
 
 /* Kept on body only so it still propagates to the viewport (and so the

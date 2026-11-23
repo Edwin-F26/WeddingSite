@@ -1,47 +1,44 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { gsap, MOTION_OK } from '../lib/gsap';
-import HeartEnvelope from './HeartEnvelope';
 import Petals from './Petals';
 import { couple, event } from '../data/wedding';
 
 /**
- * Full-screen landing. A sealed envelope floats in the middle; clicking it
- * plays the opening sequence. `onReveal` fires as the overlay starts to fade
- * (so the page beneath can animate in under it) and `onDone` when it is gone.
+ * Full-screen theatrical landing. Two wine curtains draw apart to reveal the
+ * invitation underneath. `onReveal` starts the page entrance while the
+ * curtains are still moving; `onDone` removes this overlay when they clear.
  */
 export default function Intro({ onReveal, onDone }) {
   const rootRef = useRef(null);
-  const envRef = useRef(null);
-  const flapRef = useRef(null);
-  const cardRef = useRef(null);
-  const hintRef = useRef(null);
-  const brandRef = useRef(null);
-  const idleRef = useRef(null);
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+  const valanceRef = useRef(null);
+  const contentRef = useRef(null);
   const [opening, setOpening] = useState(false);
 
-  // Entrance + idle float.
+  // Let the title emerge from darkness after the curtains settle.
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
-        gsap.from(envRef.current, {
-          y: 40,
-          opacity: 0,
-          scale: 0.92,
-          duration: 1.2,
-          ease: 'power3.out',
-        });
-        gsap.from(hintRef.current, { opacity: 0, y: 10, delay: 0.8, duration: 1 });
-        gsap.from(brandRef.current, { opacity: 0, y: -10, delay: 0.5, duration: 1 });
-        idleRef.current = gsap.to(envRef.current, {
-          y: -8,
-          rotation: 0.6,
-          duration: 2.8,
-          yoyo: true,
-          repeat: -1,
-          ease: 'sine.inOut',
-          delay: 1.2,
-        });
+        gsap
+          .timeline()
+          .from([leftRef.current, rightRef.current], {
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+          })
+          .from(
+            contentRef.current.children,
+            {
+              y: 20,
+              opacity: 0,
+              stagger: 0.12,
+              duration: 0.9,
+              ease: 'power3.out',
+            },
+            '-=0.25',
+          );
       });
     }, rootRef);
     return () => ctx.revert();
@@ -58,48 +55,35 @@ export default function Intro({ onReveal, onDone }) {
       return;
     }
 
-    idleRef.current?.kill();
-
-    const env = envRef.current;
-    const flap = flapRef.current;
-    const card = cardRef.current;
-    const paper = env.querySelector('.env__paper');
-    const seal = env.querySelector('.env__seal');
-
-    // Where the card should end up: the middle of the viewport.
-    const rect = card.getBoundingClientRect();
-    const toX = window.innerWidth / 2 - (rect.left + rect.width / 2);
-    const toY = window.innerHeight / 2 - (rect.top + rect.height / 2);
-
     const tl = gsap.timeline({
-      defaults: { ease: 'power2.inOut' },
+      defaults: { ease: 'power4.inOut' },
       onComplete: onDone,
     });
 
-    tl.to(env, { y: 0, rotation: 0, duration: 0.3, ease: 'power1.out' })
-      .to([hintRef.current, brandRef.current], { opacity: 0, y: -6, duration: 0.3 }, '<')
-      // 1. the wax seal breaks, then the flap swings open and tucks behind
-      .to(seal, { scale: 0, opacity: 0, duration: 0.3, ease: 'back.in(2)' })
-      .to(flap, { rotateX: -180, duration: 0.75 }, '-=0.05')
-      .set(flap, { zIndex: 0 }, '-=0.4')
-      // 2. the card lifts out of the envelope
-      .to(card, { y: '-62%', duration: 0.8, ease: 'power2.out' }, '-=0.2')
-      // 3. card floats to centre while the envelope falls away
+    tl.to(contentRef.current, {
+      opacity: 0,
+      scale: 0.96,
+      filter: 'blur(8px)',
+      duration: 0.55,
+      ease: 'power2.in',
+    })
+      .add(onReveal, 0.35)
       .to(
-        card,
-        { x: toX, y: toY, scale: 1.6, duration: 1.1, ease: 'power3.inOut' },
-        '-=0.15',
+        leftRef.current,
+        { xPercent: -104, rotationY: 7, duration: 2.1 },
+        0.25,
       )
       .to(
-        paper,
-        { y: 260, rotation: -6, opacity: 0, duration: 0.9, ease: 'power2.in' },
-        '<',
+        rightRef.current,
+        { xPercent: 104, rotationY: -7, duration: 2.1 },
+        0.25,
       )
-      // 4. everything dissolves into the invitation, which starts animating
-      //    in underneath as soon as the overlay begins to fade
-      .to(card, { scale: 1.75, opacity: 0, duration: 0.6, ease: 'power2.in' }, '+=0.25')
-      .add(onReveal, '-=0.5')
-      .to(rootRef.current, { opacity: 0, duration: 0.9, ease: 'power2.inOut' }, '<');
+      .to(
+        valanceRef.current,
+        { yPercent: -110, opacity: 0, duration: 1.5 },
+        0.45,
+      )
+      .to(rootRef.current, { opacity: 0, duration: 0.45, ease: 'power2.out' }, '-=0.3');
   };
 
   return (
@@ -109,31 +93,39 @@ export default function Intro({ onReveal, onDone }) {
         <span className="intro__wash intro__wash--b" />
         <span className="intro__wash intro__wash--c" />
       </div>
-      <Petals count={18} className="intro__petals" />
+      <Petals count={12} className="intro__petals" />
 
-      <button
-        type="button"
-        className="intro__button"
-        onClick={open}
-        aria-label={`Open the invitation from ${couple.first} and ${couple.second}`}
-        disabled={opening}
-      >
+      <div className="curtain-stage" aria-hidden="true">
+        <div ref={leftRef} className="curtain curtain--left">
+          <span className="curtain__edge" />
+        </div>
+        <div ref={rightRef} className="curtain curtain--right">
+          <span className="curtain__edge" />
+        </div>
+        <div ref={valanceRef} className="curtain__valance" />
+      </div>
+
+      <div ref={contentRef} className="intro__content">
+        <span className="intro__eyebrow">An evening in Miami</span>
         <img
-          ref={brandRef}
           className="intro__wordmark"
-          src="/images/logo-wordmark.png"
-          alt=""
+          src="/images/logo-wordmark-light.png"
+          alt={`${couple.first} and ${couple.second}`}
           width="1125"
           height="153"
         />
-        <HeartEnvelope ref={envRef} flapRef={flapRef} cardRef={cardRef} tone="blush">
-          <span className="env__script">You Are Invited</span>
-          <span className="env__stamp">{event.dateStamp}</span>
-        </HeartEnvelope>
-        <span ref={hintRef} className="intro__hint">
-          Click to open
-        </span>
-      </button>
+        <span className="intro__date">{event.dateStamp}</span>
+        <button
+          type="button"
+          className="intro__button"
+          onClick={open}
+          aria-label={`Draw back the curtains for ${couple.first} and ${couple.second}'s invitation`}
+          disabled={opening}
+        >
+          <span>Draw the curtains</span>
+          <span className="intro__button-mark" aria-hidden="true">✦</span>
+        </button>
+      </div>
     </div>
   );
 }

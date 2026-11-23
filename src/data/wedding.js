@@ -11,28 +11,30 @@ export const couple = {
 };
 
 export const event = {
-  // PLACEHOLDER date: ISO string with timezone so the countdown is accurate.
-  dateISO: '2027-06-12T16:00:00-04:00',
+  // Miami is on EDT (UTC-4) on September 30.
+  dateISO: '2027-09-30T16:00:00-04:00',
   // Short stamp used on the envelope and the invitation (like "02.27.27").
-  dateStamp: '06.12.27',
+  dateStamp: '09.30.27',
   // Long form used in the hero and footer.
-  dateLong: 'Saturday, June 12, 2027',
+  dateLong: 'Thursday, September 30, 2027',
   city: 'Miami, Florida',
 };
 
 export const scripture = {
-  text: 'Therefore what God has joined together, let no one separate.',
-  reference: 'Mark 10:9',
+  text:
+    'Love bears all things, believes all things, hopes all things, endures all things. Love never ends.',
+  reference: '1 Corinthians 13:7\u20138',
 };
 
 export const venue = {
-  // PLACEHOLDER venue
-  name: 'Ever After Farms Tropical Grove',
-  subtitle: 'Barn Venue',
+  name: 'Loveland Venue',
+  subtitle: 'A Private Tropical Estate',
+  address: '18905 SW 168th Street, Miami, FL 33187',
   description:
-    'Surrounded by lush tropical greenery and natural beauty, the Tropical Grove is the perfect setting for our special day. We can\u2019t wait to celebrate our love and begin our forever surrounded by the people we love most!',
-  // PLACEHOLDER map link
-  mapUrl: 'https://maps.google.com/?q=Ever+After+Farms+Tropical+Grove',
+    'A private wedding estate where lush tropical gardens meet timeless celebrations. From our ceremony to the last dance, every moment of the evening will unfold together in one beautiful setting.',
+  websiteUrl: 'https://www.lovelandvenue.com/',
+  mapUrl:
+    'https://www.google.com/maps/search/?api=1&query=Loveland+Venue+18905+SW+168th+Street+Miami+FL+33187',
 };
 
 export const schedule = [
@@ -65,7 +67,7 @@ export const dressCode = {
 };
 
 export const rsvp = {
-  // PLACEHOLDER deadline and link
-  deadline: 'December 31, 2026',
+  // PLACEHOLDER: confirm this deadline with the couple.
+  deadline: 'August 30, 2027',
   url: 'https://www.zola.com/',
 };

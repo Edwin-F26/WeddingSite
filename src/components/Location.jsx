@@ -18,15 +18,27 @@ export default function Location() {
       <p className="section__lead" data-reveal>
         {venue.description}
       </p>
-      <a
-        className="btn btn--olive"
-        href={venue.mapUrl}
-        target="_blank"
-        rel="noreferrer"
-        data-reveal
-      >
-        Open Map
-      </a>
+      <address className="location__address" data-reveal>
+        {venue.address}
+      </address>
+      <div className="location__actions" data-reveal>
+        <a
+          className="btn btn--olive"
+          href={venue.websiteUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View Venue
+        </a>
+        <a
+          className="btn btn--olive"
+          href={venue.mapUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open Map
+        </a>
+      </div>
     </section>
   );
 }

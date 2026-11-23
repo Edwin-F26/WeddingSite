@@ -95,7 +95,7 @@ export function Bow({ className = '', width = 96 }) {
   );
 }
 
-/** Two entwined rings with a sprig – replaces the hands illustration. */
+/** Two clean overlapping wedding bands. */
 export function Rings({ className = '', width = 220 }) {
   return (
     <svg
@@ -104,23 +104,14 @@ export function Rings({ className = '', width = 220 }) {
       width={width}
       aria-hidden="true"
     >
-      <g {...stroke}>
-        <circle cx="92" cy="86" r="40" />
-        <circle cx="92" cy="86" r="34" opacity="0.5" />
-        <circle cx="134" cy="86" r="40" />
-        <circle cx="134" cy="86" r="34" opacity="0.5" />
-        <path d="M134 40 l-7 6 h14z M127 46 l7 8 7 -8" />
-        <path d="M30 120 C 60 100, 70 70, 60 36" />
-        <path d="M56 50 c-10 -2 -16 2 -20 10 c8 2 16 -2 20 -10z" />
-        <path d="M60 70 c10 -2 16 2 20 10 c-8 2 -16 -2 -20 -10z" />
-        <path d="M50 96 c-10 -2 -16 2 -20 10 c8 2 16 -2 20 -10z" />
-        <path d="M190 120 C 160 100, 150 70, 160 36" />
-        <path d="M164 50 c10 -2 16 2 20 10 c-8 2 -16 -2 -20 -10z" />
-        <path d="M160 70 c-10 -2 -16 2 -20 10 c8 2 16 -2 20 -10z" />
-        <path d="M170 96 c10 -2 16 2 20 10 c-8 2 -16 -2 -20 -10z" />
+      <g {...stroke} strokeWidth="2">
+        <circle cx="88" cy="78" r="43" />
+        <circle cx="88" cy="78" r="36" opacity="0.45" />
+        <circle cx="132" cy="78" r="43" />
+        <circle cx="132" cy="78" r="36" opacity="0.45" />
+        <path d="M57 50 A43 43 0 0 1 84 35" opacity="0.7" />
+        <path d="M136 35 A43 43 0 0 1 163 50" opacity="0.7" />
       </g>
-      <circle cx="60" cy="36" r="1.8" fill="currentColor" />
-      <circle cx="160" cy="36" r="1.8" fill="currentColor" />
     </svg>
   );
 }

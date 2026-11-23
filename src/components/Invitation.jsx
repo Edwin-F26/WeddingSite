@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 import { gsap, MOTION_OK } from '../lib/gsap';
-import { Corner, Flourish, Rings, Rule } from './Ornaments';
+import { Flourish, Rings, Rule } from './Ornaments';
 import Countdown from './Countdown';
 import Petals from './Petals';
 import { couple, event, scripture } from '../data/wedding';
@@ -65,21 +65,23 @@ export default function Invitation({ active }) {
 
       <article className="card" aria-labelledby="couple-names">
         <div className="card__frame-line" aria-hidden="true" />
-        <Corner className="card__corner card__corner--tl" />
-        <Corner className="card__corner card__corner--tr" />
-        <Corner className="card__corner card__corner--bl" />
-        <Corner className="card__corner card__corner--br" />
+        <div className="card__orbit" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
 
         <div className="card__inner">
-          <img
-            className="card__monogram"
-            src="/images/logo-monogram.png"
-            alt=""
-            width="907"
-            height="405"
-            data-reveal
-          />
+          <div className="card__meta" data-reveal>
+            <span>Edwin &amp; Maria</span>
+            <span>Miami · MMXXVII</span>
+          </div>
+
           <Flourish className="card__flourish" data-reveal />
+
+          <p className="card__prelude" data-reveal>
+            You are invited to witness
+          </p>
 
           <h1 id="couple-names" className="card__names" data-reveal>
             <span className="card__name">{couple.first}</span>
@@ -87,7 +89,7 @@ export default function Invitation({ active }) {
             <span className="card__name">{couple.second}</span>
           </h1>
           <p className="card__tag" data-reveal>
-            are getting married!
+            we are getting married
           </p>
 
           <Rule className="card__rule" data-reveal />
@@ -111,6 +113,10 @@ export default function Invitation({ active }) {
 
           <Flourish className="card__flourish card__flourish--bottom" data-reveal />
         </div>
+
+        <span className="card__folio" aria-hidden="true">
+          IX · XXX · MMXXVII
+        </span>
       </article>
 
       <Countdown />
