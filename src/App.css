@@ -2453,7 +2453,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.8rem;
+  gap: 1.55rem;
   text-align: center;
   color: var(--cocoa);
 }
@@ -2466,6 +2466,7 @@
 }
 
 .rsvp__heart-small {
+  margin-top: 0.35rem;
   font-family: var(--serif);
   font-size: clamp(0.85rem, 2.6vw, 1.05rem);
   font-style: italic;
